@@ -40,7 +40,7 @@ public class Input {
 
     private List<Integer> AskCoordForShipAndType() {
      this.CoordinatesAndShipType = new ArrayList<>();
-     System.out.println("select one: ");
+     System.out.println("select row: ");
      int row = scanner.nextInt();
      scanner.nextLine();
      System.out.println("select col : ");
@@ -59,7 +59,7 @@ public class Input {
         int GamePlayer = player + 1;
         Square shipPart;
         Ship ship;
-        System.out.println("Player" + GamePlayer + "place ship");
+        System.out.println("Player " + GamePlayer + " place ship");
         CoordinatesAndShipType = AskCoordForShipAndType();
         int row = CoordinatesAndShipType.get(0);
         int col = CoordinatesAndShipType.get(1);
@@ -72,7 +72,7 @@ public class Input {
 
     public int[] shoot(int player) {
         int GamePlayer = player +1;
-        System.out.println("Player" + GamePlayer + " shoot");
+        System.out.println("Player " + GamePlayer + " shoot");
         System.out.println("select row: ");
         int row = scanner.nextInt();
         System.out.println("select col: ");
