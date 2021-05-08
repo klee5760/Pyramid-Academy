@@ -1,49 +1,74 @@
 package com.company;
 
-import java.util.List;
-
 public class Ship {
 
-    private List<Square> NewShip;
-    private ShipType shipType;
+    private int row;
+    private int col;
+    private int length;
+    private int direction;
 
-    public Ship(List<Square> newShip, ShipType shipType) {
-        NewShip = newShip;
-        this.shipType = shipType;
+    public static final int UNSET = -1;
+    public static final int HORIZONTAL = 0;
+    public static final int VERTICAL = 1;
 
+
+    public Ship(int length) {
+        this.length = length;
+        this.row = -1;
+        this.col = -1;
+        this.direction = UNSET;
     }
 
-    public List<Square> getFields() {
-        return NewShip;
-    }
-
-    public ShipType getShipType(){
-        return shipType;
-    }
-
-    public void add(Square square) {
-        NewShip.add(square);
-    }
-
-    public boolean isPlacementOk (Ship ship1, List<Ship> ships, Board board) {
-        int count = 0;
-        for (int i = 0; i < ship1.getFields().size(); i++) {
-            if (ship1.getFields().get(i).getY() > board.getSizeY() ||
-                    ship1.getFields().get(i).getX() > board.getSizeX()) {
-                count++;
-            }
-            for (int k = 0; k < ships.size(); k++) {
-                for (int z = 0; z < ships.get(k).getFields().size(); z++) {
-                    if (ship1.getFields().get(i).getX() == ships.get(k).getFields().get(z).getX() &&
-                            ship1.getFields().get(i).getX() == ships.get(k).getFields().get(z).getY()) {
-                        count++;
-                    }
-                }
-            }
-        }
-        if (count == 0) {
+    public boolean isLocationSet() {
+        if (row == -1 || col == -1)
+            return false;
+        else
             return true;
-        }
-        return false;
+    }
+
+    public boolean isDirectionSet() {
+        if (direction == UNSET)
+            return false;
+        else
+            return true;
+    }
+
+    public void setLocation(int row, int col) {
+        this.row = row;
+        this.col = col;
+    }
+
+    public void setDirection(int direction) {
+        if (direction != UNSET && direction != HORIZONTAL && direction != VERTICAL)
+            throw new IllegalArgumentException("Invalid direction. It must be -1, 0, or 1");
+        this.direction = direction;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getCol() {
+        return col;
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public int getDirection() {
+        return direction;
+    }
+
+    private String directionToString() {
+        if (direction == UNSET)
+            return "UNSET";
+        else if (direction == HORIZONTAL)
+            return "HORIZONTAL";
+        else return "VERTICAL";
+    }
+
+    public String toString() {
+        return "Ship " + getRow() + ", " + getCol() + " with length " + getLength() + " and direction " + directionToString();
     }
 }

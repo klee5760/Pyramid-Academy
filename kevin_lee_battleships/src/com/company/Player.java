@@ -1,53 +1,54 @@
 package com.company;
 
-import java.util.List;
-
 public class Player {
+    private static final int[] SHIP_LENGTHS = {2,3,3,4,5};
+    private static final int NUM_OF_SHIPS = 5;
 
-    private List<Ship> ships;
-    private Board board;
-    private int remainingShips = 0;
+    public Ship[] ships;
+    public Grid playerGrid;
+    public Grid oppGrid;
 
-    public Player(List<Ship> ships, Board board) {
-        this.ships = ships;
-        this.board = board;
-    }
-
-    public Board getBoard() {
-        return board;
-    }
-
-    public void setBoard(Board board) {
-        this.board = board;
-    }
-
-    public int numberOfSquaresOfShips(List<Ship> ships) {
-        int sumOfAllSquares = 0;
-        for(Ship ship : ships) {
-            sumOfAllSquares += ship.getShipType().label;
+    public Player()
+    {
+        if(NUM_OF_SHIPS !=5)
+        {
+            throw new IllegalArgumentException("ERROR! Num of ships must be 5");
         }
-        return sumOfAllSquares;
+        ships = new Ship[NUM_OF_SHIPS];
+        for(int i=0;i<NUM_OF_SHIPS; i++)
+        {
+            Ship tempShip = new Ship(SHIP_LENGTHS[i]);
+            ships[i] = tempShip;
+        }
+
+        playerGrid = new Grid();
+        oppGrid = new Grid();
     }
 
-    public boolean handleShot(int x,int y) {
-        for(Ship ship: ships) {
-            for(Square square: ship.getFields()) {
-                if (square.getY() == y && square.getX() == x && square.getSquareStatus().equals(SquareStatus.SHIP)) {
-                    square.setSquareStatus(SquareStatus.HIT);
-                    board.getSquare(x,y).setSquareStatus(SquareStatus.HIT);
-                    return true;
-                } else if(square.getY() == y && square.getX() == x && square.getSquareStatus().equals(SquareStatus.HIT)) {
-                    square.setSquareStatus(SquareStatus.HIT);
-                    board.getSquare(x,y).setSquareStatus(SquareStatus.HIT);
-                    System.out.printf("Already Hit!");
-                    return false;
-                    }
-
-                }
-            }
-        board.getSquare(x, y).setSquareStatus(SquareStatus.MISSED);
-        System.out.printf("MISS!");
-        return false;
+    public void addShips()
+    {
+        for (Ship s: ships)
+        {
+            playerGrid.addShip(s);
         }
     }
 
+    public int numOfShipsLeft()
+    {
+        int counter = 5;
+        for(Ship s: ships)
+        {
+            if (s.isLocationSet() && s.isDirectionSet())
+                counter--;
+        }
+
+        return counter;
+    }
+
+    public void chooseShipLocation(Ship s, int row,int col, int direction)
+    {
+        s.setLocation(row,col);
+        s.setDirection(direction);
+        playerGrid.addShip(s);
+    }
+}
